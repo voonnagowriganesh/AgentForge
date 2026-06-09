@@ -13,8 +13,8 @@ TOOLS = {
         "function": llm_tool,
         "description": "General reasoning",
     },
-    #     "web_search":{
-    #         "function":search_web,
-    #         "description" : "Web searching tool"
-    #     }
+    "web_search": {
+        "function": search_web,
+        "description": "Search Current information from internet",
+    },
 }

@@ -1,5 +1,6 @@
 from app.core.llm import llm
 from app.core.logger import logger
+from app.schemas.tool_response import ToolResponse
 
 
 async def llm_tool(query: str, memory_context=None):
@@ -25,8 +26,8 @@ async def llm_tool(query: str, memory_context=None):
         response_length=len(response),
         response_preview=response[:200],
     )
-    return {
-        "success": True,
-        "tool": "llm",
-        "result": response,
-    }
+    return ToolResponse(
+        success=True,
+        tool="llm",
+        result=response,
+    ).model_dump()

@@ -12,6 +12,8 @@ from app.agents.tool_agent import tool_agent
 
 from app.agents.memory_agent import memory_agent
 
+from app.utils.result_parser import extract_result
+
 from app.core.logger import logger
 
 # async def planner_node(state):
@@ -24,7 +26,7 @@ async def planner_node(state):
 
     plan = await planner_agent.execute(state["query"], state["memory_context"])
     trace = state.get("execution_trace", [])
-    trace.append({"agent": "planner", "output": plan})
+    trace.append({"agent": "planner", "steps": plan["plan"]})
 
     logger.info("planner_node_completed", query=state["query"], plan=plan)
     return {"plan": plan["plan"], "current_step": 0, "execution_trace": trace}
@@ -79,7 +81,9 @@ async def executor_node(state):
 
     results.append(result)
 
-    trace.append({"agent": "executor", "tool": task["tool"], "output": str(result)})
+    trace.append(
+        {"agent": "executor", "tool": task["tool"], "output": extract_result(result)}
+    )
 
     logger.info(
         "executor_step_completed",
@@ -102,29 +106,32 @@ async def memory_node(state):
 
 async def response_node(state):
     if state.get("tool_result"):
-        final_response = str(state["tool_result"])
+        final_response = extract_result(state["tool_result"])
         logger.info("response_node_completed", final_response=final_response)
         return {"final_response": final_response}
 
     # final_response = "\n".join(state["step_results"])
 
-    last_result = state["step_results"][-1]
+    # last_result = state["step_results"][-1]
 
-    if isinstance(last_result, dict):
+    # if isinstance(last_result, dict):
 
-        final_response = str(last_result.get("result", last_result))
+    #     final_response = str(last_result.get("result", last_result))
 
-    else:
+    # else:
 
-        final_response = str(last_result)
+    #     final_response = str(last_result)
 
-    logger.info("response_node_completed", final_response=final_response)
+    final_response = "\n".join(extract_result(x) for x in state["step_results"])
 
     memory_agent.save_conversation(
         session_id=state["session_id"],
         query=state["query"],
         response=final_response,
     )
+
+    logger.info("response_node_completed", final_response=final_response)
+
     return {"final_response": final_response}
 
 

@@ -1,6 +1,8 @@
 import ast
 import operator
 
+from app.schemas.tool_response import ToolResponse
+
 OPERATORS = {
     ast.Add: operator.add,
     ast.Sub: operator.sub,
@@ -30,8 +32,8 @@ def calculate(expression: str):
 
     result = evaluate(tree.body)
 
-    return {
-        "success": True,
-        "tool": "calculator",
-        "result": result,
-    }
+    return ToolResponse(
+        success=True,
+        tool="calculator",
+        result=result,
+    ).model_dump()
