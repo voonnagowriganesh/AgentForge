@@ -6,12 +6,24 @@ from app.core.logger import logger
 
 from app.core.exceptions import ToolNotFoundException
 
-ALLOWED_TOOLS = {"calculator", "datetime", "llm", "web_search"}
+ALLOWED_TOOLS = {
+    "calculator",
+    "datetime",
+    "llm",
+    "web_search",
+    "memory",
+    "acknowledge",
+}
 
 
 class ExecutorAgent:
 
-    async def execute(self, step: dict, memory_context=None):
+    async def execute(
+        self,
+        step: dict,
+        memory_context=None,
+        previous_results=None,
+    ):
         tool_name = step["tool"]
         tool_input = step["input"]
 
@@ -38,9 +50,23 @@ class ExecutorAgent:
         # else:
         #     result = tool(tool_input)
 
-        if tool_name == "llm":
+        if tool_name == "memory":
 
-            result = await tool(tool_input, memory_context)
+            relevant_memory = memory_context.get("relevant", [])
+
+            result = tool(relevant_memory)
+        elif tool_name == "llm":
+
+            logger.info(
+                "llm_tool_debug",
+                previous_results=previous_results,
+            )
+
+            result = await tool(
+                tool_input,
+                memory_context,
+                previous_results,
+            )
 
         elif inspect.iscoroutinefunction(tool):
 

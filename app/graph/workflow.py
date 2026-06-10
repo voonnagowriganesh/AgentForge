@@ -73,7 +73,15 @@ async def executor_node(state):
 
     task = state["plan"][idx]
 
-    result = await executor_agent.execute(task, state["memory_context"])
+    logger.info(
+        "executor_debug",
+        current_tool=task["tool"],
+        previous_results=state.get("step_results", []),
+    )
+
+    result = await executor_agent.execute(
+        task, state["memory_context"], state.get("step_results", [])
+    )
 
     trace = state.get("execution_trace", [])
 
@@ -97,32 +105,96 @@ async def executor_node(state):
 
 async def memory_node(state):
 
-    memory = memory_agent.retrieve_context(state["session_id"])
+    recent_memory = memory_agent.retrieve_context(state["session_id"])
 
-    logger.info("Memory_node Completed ", memory=memory)
+    relevant_memory = await memory_agent.search_context(
+        state["session_id"],
+        state["query"],
+    )
 
-    return {"memory_context": memory}
+    combined_memory = {
+        "recent": recent_memory,
+        "relevant": relevant_memory,
+    }
+
+    logger.info("Memory_node Completed ", memory=combined_memory)
+
+    return {"memory_context": combined_memory}
+
+
+# async def response_node(state):
+#     if state.get("tool_result"):
+#         final_response = extract_result(state["tool_result"])
+#         logger.info("response_node_completed", final_response=final_response)
+#         return {"final_response": final_response}
+
+# final_response = "\n".join(state["step_results"])
+
+# last_result = state["step_results"][-1]
+
+# if isinstance(last_result, dict):
+
+#     final_response = str(last_result.get("result", last_result))
+
+# else:
+
+#     final_response = str(last_result)
+
+# final_response = "\n".join(extract_result(x) for x in state["step_results"])
+
+# memory_agent.save_conversation(
+#     session_id=state["session_id"],
+#     query=state["query"],
+#     response=final_response,
+# )
+
+# logger.info("response_node_completed", final_response=final_response)
+
+# return {"final_response": final_response}
 
 
 async def response_node(state):
+
     if state.get("tool_result"):
         final_response = extract_result(state["tool_result"])
-        logger.info("response_node_completed", final_response=final_response)
+
+        logger.info(
+            "response_node_completed",
+            final_response=final_response,
+        )
+
         return {"final_response": final_response}
 
-    # final_response = "\n".join(state["step_results"])
+    query_lower = state["query"].lower().strip()
 
-    # last_result = state["step_results"][-1]
+    if query_lower.startswith("my name is"):
+        name = state["query"][11:].strip()
 
-    # if isinstance(last_result, dict):
+        memory_agent.save_conversation(
+            session_id=state["session_id"],
+            query=state["query"],
+            response=f"Name stored successfully: {name}",
+        )
 
-    #     final_response = str(last_result.get("result", last_result))
+        return {"final_response": f"Name stored successfully: {name}"}
 
-    # else:
+    if query_lower.startswith("i live in"):
+        location = state["query"][9:].strip()
 
-    #     final_response = str(last_result)
+        memory_agent.save_conversation(
+            session_id=state["session_id"],
+            query=state["query"],
+            response=f"Location stored successfully: {location}",
+        )
 
-    final_response = "\n".join(extract_result(x) for x in state["step_results"])
+        return {"final_response": f"Location stored successfully: {location}"}
+
+    # final_response = "\n".join(extract_result(x) for x in state["step_results"])
+    final_response = extract_result(state["step_results"][-1])
+
+    # tool_used = state["plan"][0]["tool"]
+
+    # if tool_used != "memory":
 
     memory_agent.save_conversation(
         session_id=state["session_id"],
@@ -130,7 +202,10 @@ async def response_node(state):
         response=final_response,
     )
 
-    logger.info("response_node_completed", final_response=final_response)
+    logger.info(
+        "response_node_completed",
+        final_response=final_response,
+    )
 
     return {"final_response": final_response}
 

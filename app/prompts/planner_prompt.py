@@ -2,12 +2,75 @@ PLANNER_PROMPT = """
 You are a planning agent.
 
 Conversation History:
-{memory}
+
+
+Recent Conversation:
+{recent_memory}
+
+
+Relevant Memories:
+{relevant_memory}
 
 Available Tools:
 {tools}
 
+Do NOT use memory tool for statements that provide
+new information.
 
+Examples:
+
+"My name is John"
+"I work at Infosys"
+"My favorite color is green"
+
+
+IMPORTANT:
+
+The memory tool only retrieves relevant memories.
+
+After retrieving memory, use the llm tool to generate the final response.
+
+Do not return raw memory content directly to the user.
+
+If the user is providing personal information
+such as:
+
+- My name is ...
+- I am ...
+- My favourite color is ...
+- I live in ...
+
+DO NOT retrieve memory.
+
+Use llm tool only to acknowledge storage.
+
+Example:
+
+User:
+"My name is John"
+
+Plan:
+
+{{
+  "plan": [
+    {{
+      "step":1,
+      "tool":"llm",
+      "input":"Acknowledge that the user's name has been stored."
+    }}
+  ]
+}}
+
+These are facts being provided by the user.
+
+Use llm instead.
+
+Use memory when:
+
+- Relevant memory already contains the answer
+- User asks a follow-up question
+- User refers to he/she/it/that
+- Answer can be directly extracted from memory
 
 Use web_search when:
 
@@ -36,17 +99,60 @@ Instructions:
 5. Be concise and accurate.
 
 
-Expected Format:
+
+
+You may generate one or more steps.
+
+Use memory first when relevant.
+
+Use web_search before llm when fresh information is needed.
+
+The output of earlier steps can be used by later steps.
+
+Examples:
+
+Memory only:
+{{
+  "plan":[
+    {{
+      "step":1,
+      "tool":"memory",
+      "input":"relevant_memory"
+    }}
+  ]
+}}
+{{
+"plan":[
+    {{
+      "step":1,
+      "tool":memory,
+       "input": "user name"
+    }},
+    {{
+      "step": 2,
+      "tool": "llm",
+      "input": "Answer ONLY the user's question using the retrieved memory. Do not include unrelated memory. Do not add greetings. Do not mention memory retrieval."
+    }}
+]
+}}
+
+Web + LLM:
 
 {{
-    "plan":[
-        {{
-            "step":1,
-            "tool":"llm",
-            "input":"user query"
-        }}
-    ]
+  "plan":[
+    {{
+      "step":1,
+      "tool":"web_search",
+      "input":"latest infosys news"
+    }},
+    {{
+      "step":2,
+      "tool":"llm",
+      "input":"summarize search results"
+    }}
+  ]
 }}
+
 
 Query:
 {query}

@@ -20,9 +20,43 @@ class PlannerAgent:
         logger.info("PlannerAgent started", query=query)
 
         tools = get_available_tools()
-        prompt = PLANNER_PROMPT.format(query=query, tools=tools, memory=memory)
+        prompt = PLANNER_PROMPT.format(
+            query=query,
+            tools=tools,
+            recent_memory=memory["recent"],
+            relevant_memory=memory["relevant"],
+        )
         logger.info("planner_prompt_prepared", prompt_length=len(prompt))
 
+        query_lower = query.lower().strip()
+
+        if query_lower.startswith("my name is"):
+
+            name = query[11:].strip()
+
+            return {
+                "plan": [
+                    {
+                        "step": 1,
+                        "tool": "acknowledge",
+                        "input": f"Name stored successfully: {name}",
+                    }
+                ]
+            }
+
+        if query_lower.startswith("i live in"):
+
+            location = query[9:].strip()
+
+            return {
+                "plan": [
+                    {
+                        "step": 1,
+                        "tool": "acknowledge",
+                        "input": f"Location stored successfully: {location}",
+                    }
+                ]
+            }
         result = await llm.invoke(prompt)
         result = result.strip()
         logger.info("planner_raw_response", response_preview=result[:250])

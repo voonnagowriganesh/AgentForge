@@ -100,3 +100,45 @@ def get_messages(session_id: str):
     )
 
     return memory
+
+
+def search_messages(
+    session_id: str,
+    query: str,
+):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+    SELECT role, content
+    FROM conversation_memory
+    WHERE session_id = ?
+    AND content LIKE ?
+    ORDER BY id DESC
+    LIMIT 5
+    """,
+        (session_id, f"%{query}%"),
+    )
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    results = [
+        {
+            "role": row["role"],
+            "content": row["content"],
+        }
+        for row in rows
+    ]
+
+    logger.info(
+        "memory_search_completed",
+        session_id=session_id,
+        query=query,
+        count=len(results),
+    )
+
+    return results

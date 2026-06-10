@@ -7,7 +7,7 @@ class AgentState(TypedDict):
 
     session_id: str
 
-    memory_context: list
+    memory_context: dict
 
     route: str
 
