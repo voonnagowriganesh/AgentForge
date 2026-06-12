@@ -40,6 +40,19 @@ such as:
 - My favourite color is ...
 - I live in ...
 
+IMPORTANT:
+
+Do not rewrite the user's query.
+
+When using memory tool, pass the original user query exactly.
+
+Bad:
+"CEO of Google"
+
+Good:
+"Who is the CEO of Google?"
+--
+
 DO NOT retrieve memory.
 
 Use llm tool only to acknowledge storage.

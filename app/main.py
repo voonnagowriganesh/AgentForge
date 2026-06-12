@@ -7,11 +7,13 @@ from app.core.exception_handlers import agent_exception_handler
 
 from app.api.routes import router
 
-from app.db.database import init_db
+from app.db.database import init_db, migrate_db
 
 app = FastAPI(title="AI Agent Platform")
 
+
 init_db()
+migrate_db()
 
 logger.info("application_started", event_name="fastapi_app_initialized")
 
