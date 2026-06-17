@@ -31,6 +31,9 @@ class MemorySearchAgent:
             or query_lower.startswith("i work at")
             or query_lower.startswith("i am ")
             or query_lower.startswith("my favorite color is")
+            or query_lower.startswith("my skills are")
+            or query_lower.startswith("i graduated from")
+            or query_lower.startswith("my hobbies are")
         ):
             logger.info(
                 "memory_creation_query_detected",
@@ -203,6 +206,69 @@ class MemorySearchAgent:
             )
 
             return ["NO_PROFESSION_FOUND"]
+
+        # Skills
+
+        if any(
+            phrase in query_lower
+            for phrase in [
+                "what are my skills",
+                "my skills",
+                "what skills do i have",
+            ]
+        ):
+
+            skills = get_user_memory(
+                session_id,
+                "skills",
+            )
+
+            if skills:
+                return [skills]
+
+            return ["NO_SKILLS_FOUND"]
+
+        # Education
+
+        if any(
+            phrase in query_lower
+            for phrase in [
+                "what is my education",
+                "where did i study",
+                "where did i graduate from",
+            ]
+        ):
+
+            education = get_user_memory(
+                session_id,
+                "education",
+            )
+
+            if education:
+                return [education]
+
+            return ["NO_EDUCATION_FOUND"]
+
+        # Hobbies
+
+        if any(
+            phrase in query_lower
+            for phrase in [
+                "what are my hobbies",
+                "my hobbies",
+                "what do i like",
+            ]
+        ):
+
+            hobbies = get_user_memory(
+                session_id,
+                "hobbies",
+            )
+
+            if hobbies:
+                return [hobbies]
+
+            return ["NO_HOBBIES_FOUND"]
 
         if any(
             phrase in query_lower

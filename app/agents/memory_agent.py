@@ -109,6 +109,23 @@ class MemoryAgent:
                 "memory_value": query[20:].strip(),
             }
 
+        elif query_lower.startswith("my skills are"):
+            metadata = {
+                "memory_type": "skills",
+                "memory_value": query[13:].strip(),
+            }
+
+        elif query_lower.startswith("i graduated from"):
+            metadata = {
+                "memory_type": "education",
+                "memory_value": query[17:].strip(),
+            }
+
+        elif query_lower.startswith("my hobbies are"):
+            metadata = {
+                "memory_type": "hobbies",
+                "memory_value": query[15:].strip(),
+            }
         trace_event(f"Structured memory detected : {metadata}")
 
         trace_event(f"{session_id} , User query : {query}")
@@ -126,8 +143,6 @@ class MemoryAgent:
                 session_id=session_id,
                 memory_type=metadata["memory_type"],
             )
-
-        
 
         save_messages(
             session_id,
@@ -171,12 +186,22 @@ class MemoryAgent:
     ):
         memories = {}
 
+        # for memory_type in [
+        #     "name",
+        #     "location",
+        #     "company",
+        #     "profession",
+        #     "favorite_color",
+        # ]:
         for memory_type in [
             "name",
             "location",
             "company",
             "profession",
             "favorite_color",
+            "skills",
+            "education",
+            "hobbies",
         ]:
 
             value = get_memory_by_type(

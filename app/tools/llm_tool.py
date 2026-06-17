@@ -1,23 +1,58 @@
 from app.core.llm import llm
 from app.core.logger import logger
 from app.schemas.tool_response import ToolResponse
+from app.memory.context_builder import build_memory_context
 
 
 async def llm_tool(query: str, memory_context=None, previous_results=None):
+
     logger.info("llm_tool_started", query=query)
 
     if previous_results:
 
-        prompt = f"""
+        # prompt = f"""
+        # You are an AI assistant.
+
+        # {memory_context}
+
+        # User Question:
+        # {query}
+
+        # Tool Results:
+        # {previous_results}
+
+        # Use ONLY the tool results to answer.
+
+        # Answer:
+        # """
+
+        if previous_results:
+
+            prompt = f"""
         You are an AI assistant.
+
+        User Question:
+        {query}
+
+        Memory Context:
+        {memory_context}
 
         Tool Results:
         {previous_results}
 
-        Task:
-        {query}
+        Rules:
 
-        Use ONLY the tool results to answer.
+        1. Tool Results are the PRIMARY source.
+        2. Memory Context is SECONDARY.
+        3. If Tool Results contain the answer, use them.
+        4. If Tool Results do not fully answer the question, use Memory Context if relevant.
+        5. Do not invent facts not present in Tool Results or Memory Context.
+        6. Answer naturally and directly.
+        7. Never mention:
+        - vector databases
+        - embeddings
+        - retrieval systems
+        - internal architecture
 
         Answer:
         """

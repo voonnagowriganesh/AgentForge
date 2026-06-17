@@ -4,6 +4,10 @@ import inspect
 
 from app.core.logger import logger
 
+from app.memory.context_builder import build_memory_context
+
+from app.rag.rag_tool import document_search
+
 from app.core.exceptions import ToolNotFoundException
 
 ALLOWED_TOOLS = {
@@ -13,6 +17,8 @@ ALLOWED_TOOLS = {
     "web_search",
     "memory",
     "acknowledge",
+    "profile",
+    "document_search",
 }
 
 
@@ -21,6 +27,8 @@ class ExecutorAgent:
     async def execute(
         self,
         step: dict,
+        session_id: str,
+        user_query,
         memory_context=None,
         previous_results=None,
     ):
@@ -59,14 +67,28 @@ class ExecutorAgent:
 
             logger.info(
                 "llm_tool_debug",
+                session_id=session_id,
                 previous_results=previous_results,
             )
 
-            result = await tool(
-                tool_input,
-                memory_context,
-                previous_results,
+            memory_profile = build_memory_context(session_id)
+
+            logger.info(
+                "memory_context_injected",
+                session_id=session_id,
+                memory_context=memory_profile,
             )
+
+            result = await tool(
+                #tool_input,
+                query = user_query,
+                memory_context=memory_profile,
+                previous_results=previous_results,
+            )
+
+        elif tool_name == "document_search":
+
+            result = document_search(tool_input)
 
         elif inspect.iscoroutinefunction(tool):
 

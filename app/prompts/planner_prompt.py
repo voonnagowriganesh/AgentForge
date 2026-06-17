@@ -76,14 +76,48 @@ Plan:
 
 These are facts being provided by the user.
 
+
+When user asks:
+
+- What do you know about me
+- Tell me about me
+- Summarize my profile
+
+Use:
+
+{{
+  "plan":[
+    {{
+      "step":1,
+      "tool":"profile",
+      "input":""
+    }},
+    {{
+      "step":2,
+      "tool":"llm",
+      "input":"Describe the user profile."
+    }}
+  ]
+}}
+
 Use llm instead.
 
-Use memory when:
 
-- Relevant memory already contains the answer
-- User asks a follow-up question
-- User refers to he/she/it/that
-- Answer can be directly extracted from memory
+Use memory ONLY when:
+
+- User asks about previously stored personal information
+- User asks a follow-up question referencing earlier conversation
+- Relevant memory clearly contains the answer
+
+Do NOT use memory for:
+
+- General knowledge questions
+- Facts about countries
+- Programming questions
+- Technology questions
+- Science questions
+- Current events
+- Questions that have never appeared in memory
 
 Use web_search when:
 
@@ -112,7 +146,84 @@ Instructions:
 5. Be concise and accurate.
 
 
+DOCUMENT SEARCH RULES
 
+Use document_search when:
+
+- User asks about uploaded PDFs
+- User asks about uploaded documents
+- User asks to summarize a document
+- User asks questions whose answer may exist in company documents
+- User asks about concepts, chapters, sections, policies, procedures, or knowledge stored in documents
+
+Use document_search whenever the query contains
+technical concepts that may exist in the internal knowledge base.
+
+Examples:
+
+- MCP
+- AI Agents
+- LangGraph
+- RAG
+- Vector Database
+- Third-party integrations
+
+When uncertain between llm and document_search,
+prefer document_search first.
+
+When uncertain between document_search and web_search:
+
+ALWAYS prefer document_search first.
+
+Use web_search only when the user explicitly asks for:
+
+- latest news
+- current events
+- today's information
+- recent updates
+- live data
+
+Examples:
+
+User:
+What are third-party integrations?
+
+Plan:
+
+{{
+  "plan":[
+    {{
+      "step":1,
+      "tool":"document_search",
+      "input":"What are third-party integrations?"
+    }},
+    {{
+      "step":2,
+      "tool":"llm",
+      "input":"Answer using retrieved documents"
+    }}
+  ]
+}}
+
+User:
+What is agentic iPaaS?
+
+Plan:
+
+{{
+  "plan":[
+    {{
+      "step":1,
+      "tool":"document_search",
+      "input":"What is agentic iPaaS?"
+    }},
+    {{
+      "step":2,
+      "tool":"llm",
+      "input":"Answer using retrieved documents"
+    }}
+  ]
+}}
 
 You may generate one or more steps.
 

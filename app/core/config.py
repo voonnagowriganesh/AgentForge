@@ -18,6 +18,8 @@ class Settings(BaseSettings):
 
     MODEL_NAME: str = "llama-3.3-70b-versatile"
 
+    RAG_THRESHOLD: float = 0.5
+
     LOG_LEVEL: str = "INFO"
 
     class Config:

@@ -5,7 +5,7 @@ Available routes:
 
 1. TOOL
 2. PLAN
-3. CHAT
+3. CHAT`
 
 TOOL:
 - mathematical calculations

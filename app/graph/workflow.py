@@ -2,6 +2,7 @@ from langgraph.graph import StateGraph, END
 
 from app.graph.state import AgentState
 
+
 from app.agents.router_agent import router_agent
 
 from app.agents.planner_agent import planner_agent
@@ -9,10 +10,13 @@ from app.agents.planner_agent import planner_agent
 from app.agents.executor_agent import executor_agent
 
 from app.agents.tool_agent import tool_agent
-
+from app.tools.llm_tool import llm
 from app.agents.memory_agent import memory_agent
 
+from app.memory.memory_router import check_structured_memory
+
 from app.utils.result_parser import extract_result
+
 
 from app.core.logger import logger
 
@@ -41,6 +45,23 @@ async def planner_node(state):
 
 async def router_node(state):
 
+    memory_answer = check_structured_memory(
+        state["session_id"],
+        state["query"],
+    )
+
+    if memory_answer:
+
+        logger.info(
+            "structured_memory_short_circuit",
+            answer=memory_answer,
+        )
+
+        return {
+            "route": "MEMORY",
+            "memory_answer": memory_answer,
+        }
+
     route = await router_agent.execute(state["query"])
     trace = state.get("execution_trace", [])
     trace.append({"agent": "router", "output": route})
@@ -50,6 +71,15 @@ async def router_node(state):
 
 
 def route_decision(state):
+
+    if state["route"] == "MEMORY":
+        logger.info(
+            "route_decision",
+            route=state["route"],
+            next_node="memory_response",
+        )
+
+        return "memory_response"
 
     if state["route"] == "TOOL":
         logger.info("route_decision", route=state["route"], next_node="tool")
@@ -80,7 +110,11 @@ async def executor_node(state):
     )
 
     result = await executor_agent.execute(
-        task, state["memory_context"], state.get("step_results", [])
+        task,
+        state["session_id"],
+        state["query"],
+        state["memory_context"],
+        state.get("step_results", []),
     )
 
     trace = state.get("execution_trace", [])
@@ -120,6 +154,11 @@ async def memory_node(state):
     logger.info("Memory_node Completed ", memory=combined_memory)
 
     return {"memory_context": combined_memory}
+
+
+async def memory_response_node(state):
+
+    return {"final_response": state.get("memory_answer", "No memory found.")}
 
 
 # async def response_node(state):
@@ -224,6 +263,7 @@ builder.add_node("router", router_node)
 
 builder.add_node("tool", tool_node)
 
+
 builder.add_node("planner", planner_node)
 
 
@@ -231,15 +271,46 @@ builder.add_node("executor", executor_node)
 
 builder.add_node("memory", memory_node)
 
+builder.add_node(
+    "memory_response",
+    memory_response_node,
+)
+
 
 builder.add_node("response", response_node)
 
 builder.set_entry_point("memory")
 
+# builder.add_edge(
+#     "memory",
+#     "rag",
+# )
+
+# builder.add_edge(
+#     "rag",
+#     "router",
+# )
+
 builder.add_edge("memory", "router")
 
+# builder.add_conditional_edges(
+#     "router",
+#     route_decision,
+#     {
+#         "tool": "tool",
+#         "planner": "planner",
+#         "memory_response": "memory_response",
+#     },
+# )
 builder.add_conditional_edges(
-    "router", route_decision, {"tool": "tool", "planner": "planner"}
+    "router",
+    route_decision,
+    {
+        "tool": "tool",
+        "planner": "planner",
+        "memory_response": "memory_response",
+        # "rag_response": "rag_response",
+    },
 )
 
 builder.add_edge("tool", "response")
@@ -251,5 +322,14 @@ builder.add_conditional_edges(
 )
 
 builder.add_edge("response", END)
+builder.add_edge(
+    "memory_response",
+    END,
+)
+
+# builder.add_edge(
+#     "rag_response",
+#     END,
+# )
 
 graph = builder.compile()

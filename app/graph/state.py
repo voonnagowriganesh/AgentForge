@@ -13,6 +13,9 @@ class AgentState(TypedDict):
 
     plan: list
 
+  
+    memory_answer: str
+
     current_step: int
 
     step_results: list

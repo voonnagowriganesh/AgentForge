@@ -34,6 +34,7 @@
 from app.db.database import get_connection
 from app.core.logger import logger
 from app.memory.embedding_service import embedding_service
+
 import json
 import numpy as np
 
@@ -532,15 +533,26 @@ def get_user_memory(
 
 def get_memory_profile(session_id: str):
 
+    # return {
+    #     "name": get_user_memory(session_id, "name"),
+    #     "location": get_user_memory(session_id, "location"),
+    #     "company": get_user_memory(session_id, "company"),
+    #     "profession": get_user_memory(session_id, "profession"),
+    #     "favorite_color": get_user_memory(
+    #         session_id,
+    #         "favorite_color",
+    #     ),
+    # }
+
     return {
         "name": get_user_memory(session_id, "name"),
         "location": get_user_memory(session_id, "location"),
         "company": get_user_memory(session_id, "company"),
         "profession": get_user_memory(session_id, "profession"),
-        "favorite_color": get_user_memory(
-            session_id,
-            "favorite_color",
-        ),
+        "favorite_color": get_user_memory(session_id, "favorite_color"),
+        "skills": get_user_memory(session_id, "skills"),
+        "education": get_user_memory(session_id, "education"),
+        "hobbies": get_user_memory(session_id, "hobbies"),
     }
 
 
