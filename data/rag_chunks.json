@@ -1,0 +1,298 @@
+[
+  {
+    "text": "product, you need to read “Principles” ASAP - Peter \nKazanjy, Author of Founding Sales and CEO of Atrium\nSam Bhagwat is the founder of Mastra, an \nopen-source JavaScript agent framework, \nand previously the co-founder of Gatsby, the \npopular React framework.\nGet a free digital copy \nfor your e-reader: \nmastra.ai/book",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "PRINCIPLES OF BUILDING \nAI AGENTS \nSAM BHAGWAT",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "speed in a day or two. With the right tools, it’ s easy to \nbuild an agent as it is to build a website .\nThis book is intentionally a short read, even with \nthe code examples and diagrams we’ve included. It \nshould ﬁt in your back pocket, or slide into your \npurse. Y ou should be able to use the code examples \nand get something simple working in a day or two .\nSam Bha gwa t\nSan Fran cisc o, CA \nMar ch  2025",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "to the Google Gemini Flash set of models; Gemini \nFlash 1.5 Pro supports a 2 million token context \nwindow (roughly 4,000 pages of text ). \nThis allows some interesting applications; you \nmight imagine a support assistant with the entire \ncodebase in its context window .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "writing out every tiny detail or repeating them- \nselves-they cut to the chase, only sharing the most \nimportant steps and skipping the ﬂu ﬀ. This means \nyou get clear, e ﬃcient reasoning, not a wall of text .\nBottom line: if you give these models enough \ncontext and good examples, they can deliver surpris- \ningly smart, high-quality answers to tough ques- \ntions. For example, if you want the model to help \ndiagnose a tricky medical case, giving it the patient’ s \nhistory , symptoms, and a few sample cases will lead \nto much better results than just asking a vague ques-",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "8 S A M  B H A G WAT \ntion. The trick is still the same: the more you help \nthem up front, the better their reasoning gets .\nY ou should think of reasoning models as “report \ngenerators” — you need to give them lots of context \nup front via many-shot prompting (more on that \nlater). If you do that, they can return high-quality \nresponses. If not, they will go o ﬀ the rails .\nSuggested reading : “o1 isn’t a chat model” by \nBen Hylak \nProviders and models (May 2025)",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "in addition to the speciﬁc “user prompt” that gets \npassed in .\nA fun example is to ask the model to answer the \nsame question as di ﬀerent personas, eg as Steve Jobs \nvs as Bill Gates, or as Harry Potter vs as Draco \nMalfoy .\nThis is good for helping you shape the tone  with",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "12 S A M  B H A G WAT",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Y\n4\nAGENTS 101 \nou can use direct LLM calls for one-shot \ntransformations: “given a video transcript, \nwrite a draft description .” \nFor ongoing, complex interactions, you typically \nneed to build an agent on top. Think of agents as AI \nemployees rather than contractors: they main- \ntain context, have speciﬁc roles, and can use tools to \naccomplish tasks .\nLevels of Autonomy \nThere are a lot of di ﬀerent deﬁnitions of agents and \nagency ﬂoating around. We prefer to think of agency \nas a spectrum. Like self-driving cars, there are \ndi ﬀerent levels of agent autonomy .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 17",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "I\n5\nMODEL ROUTING AND \nSTRUCTURED OUTPUT \nt’ s useful to be able to quickly test and \nexperiment with di ﬀerent models without \nneeding to learn multiple provider SDKs. This \nis known as model routing .\nHere’ s a JavaScript example with the AI SDK \nlibrary :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 19 \nStructured output \nWhen you use LLMs as part of an application, you \noften want them to return data in JSON format \ninstead of unstructured text. Most models support \n“structured output” to enable this .\nHere’ s an example of requesting a structured \nresponse by providing a schema :\nLLMs are very powerful for processing unstruc- \ntured or semi-structured text. Consider passing in \nthe text of a resume and extracting a list of jobs, \nemployers, and date ranges, or passing in a medical \nrecord and extracting a list of symptoms .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "T\n6\nTOOL CALLING \nools are functions that agents can call to \nperform speciﬁc tasks — whether \nthat's fetching weather data, querying \na database, or processing calculations .\nThe key to e ﬀective tool use is clear communica- \ntion with the model about what each tool does and \nwhen to use it .\nHere's an example of creating and using a tool :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 21 \nBEST PRACTICES :\nProvide detailed descriptions in the tool \ndeﬁnition and system prompt \nUse speciﬁc input/output schemas \nUse semantic naming that matches the \ntool's function (eg multiplyNumbers \ninstead of doStu ﬀ)",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "24 S A M  B H A G WAT \nTAKEAWAY :\nThink like an analyst. Break your problem into \nclear, reusable operations. Write each as a tool .\nIf you do this, your agent will be much more ca- \npable, reliable, and useful .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 29 \n`ToolCallFilter` \nThis processor removes tool calls from the memory \nmessages sent to the LLM. It saves tokens by \nexcluding potentially verbose tool interactions from \nthe context, which is useful if the details aren’t \nneeded for future interactions. It’ s also useful if you \nalways want your agent to call a speciﬁc tool again \nand not rely on previous tool results in memory .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "30 S A M  B H A G WAT",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "32 S A M  B H A G WAT \nbased on user input, environment, or any other \nruntime context you provide .\nExample: Creating a Dynamic Agent \nHere’ s an example of a dynamic support agent that \nadjusts its behavior based on the user’ s subscription \ntier and language preferences :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 33 \nAgent middleware",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "36 S A M  B H A G WAT \nthat because they are more powerful than pre-LLM \ndata access patterns, you may need to spend more \ntime ensuring they are permissioned accurately .\nSecurity through obscurity becomes less of a \nviable option when users can ask an agent to retrieve \nknowledge hidden in nooks and crannies .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "bit of time for some munging and glue work !\nThird-party integrations \nThe other thing that agents need is connections to \nsystems in which user data lives — including the \nability to both read and write from those systems .\nMost agents — like most SaaS — need access to \na core set of general integrations (like email, calendar, \ndocuments ).",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "prise” options with sometimes-deeper integrations \nin the thousands of dollars per month .\nIn the former camp, we’ve seen folks be happy \nwith Composio, Pipedream, and Apify .\nIn the latter camp, there are a variety of special- \nized solutions; we don’t have enough data points to \noﬀer good, general advice .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "that the server execute a tool and return a response .\nAs such, MCP is as a standard for remote code \nexecution, like OpenAPI or RPC .\nThe MCP Ecosystem \nAs MCP was gaining traction, a bunch of folks \njoined the fray .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 45 \nBuilding an MCP Server and Client \nIf you want to create MCP servers and give an agent \naccess to them, here’ s how you can do that in Type- \nscript with Mastra :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "46 S A M  B H A G WAT \nConversely , if you want to create a client with \naccess to other MCP servers, here’ s how you would \ndo that :\nWhat’s next for MCP \nMCP as a protocol is technically impressive, but the \necosystem is still working to resolve a few \nchallenges :\nFirst, discovery. There's no centralized or stan- \ndardized way to ﬁnd MCP tools. While various \nregistries have popped up, this has created its own \nsort of fragmentation .\nIn April, we somewhat tongue-in-cheek built the",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 53 \nIn Mastra, you create branches with the \n.step()  command. Here's a simple example :\nChaining \nThis is the simplest operation. Sometimes, you’ll \nwant to fetch data from a remote source before you \nfeed it into an LLM, or feed the results of one LLM \ncall into another .\nIn Mastra, you chain with the \n.then() \ncommand. Here's a simple example :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "54 S A M  B H A G WAT \nEach step in the chain waits for the previous step \nto complete, and has access to previous step results \nvia context .\nMerging \nAfter branching paths diverge to handle di ﬀerent \naspects of a task, they often need to converge again \nto combine their results :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 55 \nConditions \nSometimes your workﬂow needs to make decisions \nbased on intermediate results .\nIn workﬂow graphs, because multiple paths can \ntypically execute in parallel, in Mastra we deﬁne the \nconditional path execution on the child step rather \nthan the parent step .\nIn this example, a \nprocessData  step is execut- \ning, conditional on the fetchData  step succeeding .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "56 S A M  B H A G WAT \nBest Practices and Notes \nIt’ s helpful to compose steps in such a way that the \ninput/output at each step is meaningful in some way , \nsince you’ll be able to see it in your tracing. (More \nsoon in the T racing section ). \nAnother is to decompose steps in such a way that \nthe LLM only has to do one thing at one time. This \nusually means no more than one LLM call in any \nstep .\nMany di ﬀerent special cases of workﬂow graphs, \nlike loops, retries, etc can be made by combining \nthese primitives .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "S\n14 \nSUSPEND AND RESUME \nometimes workﬂows need to pause \nexecution while waiting for a third-party \n(like a human-in-the-loop) to provide input .\nBecause the third party can take arbitrarily long \nto respond, you don’t want to keep a running \nprocess .\nInstead, you want to persist the state of the work- \nﬂow , and have some function that you can call to \npick up where you left oﬀ.\nLet’ s diagram out a simple example with Mastra, \nwhich has . \nsuspend() and .resume() functions :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "58 S A M  B H A G WAT \nT o handle suspended workﬂows, you can watch \nfor status changes and resume execution when \nready :\nHere’ s a simple example of creating workﬂow \nwith suspend  and resume  in Mastra .\nSteps are the building blocks of workﬂows. \nCreate a step using createStep :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 59 \nThen create a workﬂow using create ‐\nWorkflow :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "60 S A M  B H A G WAT \nAfter deﬁning a workﬂow , run it like so :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "sync backend updates directly to the UI .\n• Escape hatches:  If your function is stuck wait- \ning, ﬁnd ways to push partial results or progress \nupdates to the frontend .\nBottom line: Streaming isn’t just a nice-to-have- \nit’ s critical for good UX in LLM apps. Users want to",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "64 S A M  B H A G WAT \nsee progress, not just a blank screen. If you nail this, \nyour agents will feel faster and more reliable, even if \nthe backend is still working hard .\nNow , if only streaming could help me actually \nget to Hawaii …",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "di ﬀerent spec — there was no portability . Lightstep’ s \nBen Sigelman helped create the common Otel stan- \ndard, and larger vendors like Datadog (under duress) \nbegan to support Otel .\nThere’ s a large number of observability vendors, \nboth older backend and AI-speciﬁc ones, but the UI \npatterns converge :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 67 \nA sample tracing screen \nWhat this sort of UI screen gives you is :\nA trace view. This shows how long each \nstep in the pipeline took (e.g., \nparse_input, process_request, api_call, \netc .) \nInput/output inspection. Seeing the \nexact “Input” and “Output” in JSON is \nhelpful for debugging data ﬂowing into \nand out of Lams \nCall metadata. Showing status, start/end \ntimes, latency , etc.) provides key context \naround each run, helping humans \nscanning for anomalies .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "68 S A M  B H A G WAT \nEvals \nIt’ s also nice to be able to see your evals (more on \nevals later) in a cloud environment .\nFor each of their evals, people want to see a side- \nby-side comparison of what how the agent \nresponded versus what was expected .\nThey want to see the overall score on each PR (to \nensure there aren’t regressions), and the score over \ntime, and to ﬁlter by tags, run date, and so on .\nEval UIs tends to look like this :\nA sample evaluation screen \nFinal notes on observability and tracing \nY ou’ll need a cloud tool to view this sort \nof data for your production app .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 69 \nIt’ s also  nice to be able to look at this data \nlocally when you’re developing (Mastra \ndoes this). More on this in the local \ndevelopment section .\nThere is a common standard called \nOpenT elemetry , or OT el for short, and we \nstrongly recommend emitting in that \nformat .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "PART V\nRETRIEV AL-AUGMENTED \nGENERATION (RAG)",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "expensive way of searching the dataset. Y ou can run \nit over your results to improve the ordering (but it \nwould take too long to run it over the entire \ndatabase ). \nSynthesis: ﬁnally , you pass your results as \ncontext into an LLM, along with any other context \nyou way , and it can synthesize an answer to the user .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "C\n19 \nSETTING UP YOUR RAG PIPELINE \nChunking \nhunking is the process of breaking down \nlarge documents into smaller, manageable \npieces for processing .\nThe key thing you’ll need to choose here is a \nstrategy and an overlap window. Good chunking \nbalances context preservation with retrieval gran- \nularity .\nChunking strategies including recursive, charac- \nter-based, token-aware, and format-speciﬁc (Mark- \ndown, HTML, JSON, LaT eX) splitting. Mastra \nsupports all of them .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "metadata ﬁelds like dates, categories, or \ncustom attributes .\nReranking \nReranking is a post-processing step that improves \nresult relevance by applying more sophisticated \nscoring methods. It considers factors like semantic",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "80 S A M  B H A G WAT \nrelevance, vector similarity , and position bias to \nreorder results for better accuracy .\nIt’ s a more computationally intense process, so \nyou typically don’t want to run it over your entire \ncorpus for latency reasons — you’ll typically just run \nit on a code example .\nCode Example \nHere’ s some code using Mastra to set up a RAG pipe- \nline. Mastra includes a consistent interface for \ncreating indexes, upserting embeddings, and query- \ning, while o ﬀering their own unique features and \noptimizations, so while this example uses Pinecone, \nyou could easily use another DB instead .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 81 \nNote: There are advanced ways of doing \nRAG: using LLMs to generate metadata, \nusing LLMs to reﬁne search queries; using",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "82 S A M  B H A G WAT \ngraph databases to model complex relation- \nships. These may be useful for you, but start \nby setting up a working pipeline and \ntweaking the normal parameters — embed- \nding models, rerankers, chunking algorithms \n— ﬁrst .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "ReAG is a loose grouping of thought that focuses on \nimproving using models to enrich text chunks .\nReAG advocates say you should think about \nwhat you would do with 10x your LLM budget to \nimprove your RAG pipeline quality — then go do it. \nThey point out that pre-processing is asynchronous, \nso it doesn’t need to be fast .\nSome thought experiments to consider if you’re \nthinking about ReAG :\n∗",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "86 S A M  B H A G WAT \nConclusion \nWe’re engineers. And engineers can over-engineer \nthings .\nWith RAG, you should ﬁght that tendency . Start \nsimple, check quality , get complex .\nStep one, you should be throwing your entire \ncorpus into Gemini’ s context window . Step two, write \na bunch of functions to access your dataset, bundle \nthem in an MCP server, and give them to the Cursor \nor Windsurf agent .\nIf neither step one or step two give you good \nenough quality , then  consider building a RAG \npipeline .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "PART VI \nMULTI-AGENT SYSTEMS",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "90 S A M  B H A G WAT \ndi ﬀerent system prompts, and access to di ﬀerent \ntools .\nWe often joke that designing a multi-agent \nsystem involves a lot of skills used in organizational \ndesign. Y ou try to group related tasks into a job \ndescription where you could plausibly recruit some- \none. Y ou might give creative or generative tasks to \none person and review or analytical tasks to another .\nY ou want to think about network dynamics. Is it \nbetter for three specialized agents to gossip among \nthemselves until consensus is reached? Or feed their \noutput back to a manager agent who can make a \ndecision ?\nOne advantage of multi-agent systems is",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 91 \nbreaking down complex tasks into manageable \npieces. And of course, designs are fractal. A hier- \narchy is just a supervisor of supervisors. But start \nwith the simplest version ﬁrst .\nLet’ s break down some of the patterns .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "A\n22 \nAGENT SUPERVISOR \ngent supervisors are specialized agents \nthat coordinate and manage other agents. \nThe most straightforward way to do this is \nto pass in the other agents wrapped as tools .\nFor example, in a content creation system, a \npublisher agent might supervise both a copywriter \nand an editor :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "96 S A M  B H A G WAT \nworkﬂow . They are responsible either for planning, \ncoding, or review and each work in a speciﬁc order .\nIn the previous example, you’ll notice that work- \nﬂows are steps (tools) for agents. These are inverse \nexamples to one another, which brings us, again, to \nan important takeaway .\nAll the primitives can be rearranged in the way \nyou want, custom to the control ﬂow you want .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "W\n26 \nMULTI-AGENT STANDARDS \nhile it hasn’t enjoyed quite the rapid \nlifto ﬀ of Anthropic’ s MCP , the other \nprotocol that’ s gained speed in spring \n2025 is Google’ s A2A .\nWhile all the multi-agent material we’ve covered \nso far relates to how you’d orchestrate multiple \nagents assuming you controlled all of them, A2A is a \nprotocol for communicating with “untrusted” \nagents .\nLike MCP , A2A solves an n x n problem. If there \nare n di ﬀerent agents, each of which uses a di ﬀerent \nframework, you would have to write n x m  di ﬀerent \nintegrations to make them work together .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "events. Communication uses standard web auth — \nOAuth, API keys, HTTP codes, and so on .\nA2A vs. MCP \nA2A is younger than MCP , and while Microsoft \nsupports A2A, neither OpenAI nor Anthropic has \njumped on board. It’ s possible they view MCP as \ncompetitive to A2A. Time will tell .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 99 \nEither way , expect one or multiple agent interop- \nerability protocol from the big players to emerge as \nthe default standard .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "PART VII \nEV ALS",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "104 S A M  B H A G WAT \nThere are di ﬀerent kinds of evals just like there \nare di ﬀerent kinds of tests .\nUnit tests are easy to write and run but might not \ncapture the behavior that matters; end-to-end tests \nmight capture the right behavior but they might be \nmore ﬂaky .\nSimilarly , if you’re building a RAG pipeline, or a \nstructured workﬂow , you may want to test each step \nalong the way , and then after that test the behavior \nof the system as a whole .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "T\n28 \nTEXTUAL EV ALS \nextual evals can feel a bit like a grad \nstudent TA grading your homework with a \nrubric. They are going to be a bit pedantic, \nbut they usually have a point .\nAccuracy and reliability \nY ou can evaluate how correct, truthful, and complete \nyour agent’ s answers are. For example :\nHallucination.  Do responses contain \nfacts or claims not present in the \nprovided context? This is especially \nimportant for RAG applications .\nFaithfulness.  Do responses accurately \nrepresent provided context ?",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "108 S A M  B H A G WAT \nCode Example \nHere’ s an example with three di ﬀerent evaluation \nmetrics that automatically check a content writing \nagent’ s output for accuracy , faithfulness to source \nmaterial, and potential hallucinations :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "T\n29 \nOTHER EV ALS \nhere are a few other types of evals as well .\nClassiﬁcation or Labeling Evals \nClassiﬁcation or labeling evals help determine how \naccurately a model tags or categorizes data based on \npredeﬁned categories (e.g., sentiment, topics, spam \nvs. not spam ). \nThis can include broad labeling tasks (like recog- \nnizing document intent) or ﬁne-grained tasks (like \nidentifying speciﬁc entities aka entity extraction ). \nAgent Tool Usage Evals \nT ool usage or agent evals measure how e ﬀectively a \nmodel or agent calls external tools or APIs to solve \nproblems .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "tools AI companies, like Perplexity and Replit, joke \nthat they rely more on A/B testing of user metrics \nthan evals per se. They have enough tra ﬃc that \ndegradation in agent quality will be quickly visible .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 111 \nHuman data review \nIn addition to automated tests, high-performing AI \nteams regularly review production data. Typically , \nthe easiest way to do this is to view traces which \ncapture the input and output of each step in the \npipeline. We discussed this earlier in the workﬂows \nand deployment section .\nMany correctness aspects (e.g., subtle domain \nknowledge, or an unusual user request) can’t be fully \ncaptured by rigid assertions, but human eyes catch \nthese nuances .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "PART VIII \nDEVELOPMENT & \nDEPLOYMENT",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "with your agents in the browser, seeing \nhow they respond to di ﬀerent inputs and \nuse their conﬁgured tools .\nWorkﬂow Visualizer : Seeing step-by- \nstep workﬂow execution and being able \nto suspend/resume/ replay",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 117 \nAgent/workﬂow endpoints: Being able \nto curl agents and workﬂows on localhost \n(this also enables using eg Postman )\nTool Playground : T esting any tools and \nbeing able to verify inputs / outputs \nwithout needing to invoke them through \nan agent .\nTracing & Evals: See inputs and outputs \nof each step of agent and workﬂow \nexecution, as well as eval metrics as you \niterate on code .\nHere’ s a screenshot from Mastra’ s local dev envi- \nronment :",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "124 S A M  B H A G WAT \nIn AI, then, it’ s little wonder that multi-modal \nuse-cases are a bit younger and less mature. Like on \nearlier platforms, they’re trickier to get right, and \nmore computationally complex .\nImage Generation \nMarch 2025 brought the invention of Ghibli-core — \nthink soft colors, dreamy backgrounds, and those \niconic wide-eyed characters .\nPeople had been playing with Midjourney , \nStable Di ﬀusion, and others for a while. But March \nwas a step forward in consumer-grade image-gener- \nation, with to transpose photos into speciﬁc styles .\nPeople uploaded selﬁes or old photos, added a \nprompt, and instantly got back an anime version \nthat looked straight out of “Spirited Away .”",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 125 \nThe Mastra cofounders (Shane, Abhi and Sam) at a basketball \ngame \nThis wasn’t just a niche thing; the Ghibli trend \ntook over social feeds everywhere. The o ﬃcial \n(Trump) White House account joined the fray by \n(controversially) tweeted out a Ghibli-ﬁed picture of \na detained immigrant .\nMore broadly , the “Ghibli” moment showed \nvitality for the digital art use case — image gen for \nwhat was something between a storyboard, a char- \nacter sketch, and environment concepts .\nUse Cases \nIn terms of people using image gen for products, \nthere are a few use- cases .\nIn marketing and e-commerce, product mockups",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "business .\nVoice \nThe key modalities in voice are speech-to-text (STT), \ntext-to-speech (TTS), and speech-to-speech, also \nknown as realtime voice .\nWhat users want  in an agent voice product is \nsomething that can understand their tone, and \nrespond immediately .\nIn order to do that, you could train a model that",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "robotic .\nWhile these products make great demos, there \nare not too many companies using realtime voice in \nproduction .\nWhat they use instead is speech-to-text (STT) \nand text-to-speech (TTS) pipeline. They use one \nmodel to translate input voice to text, another model \nto generate response text, and then translate the \nresponse text into an audio response .\nHere’ s an example of listening; you could follow \nthis up with \nagent.speak()  to reply .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "128 S A M  B H A G WAT \nVideo \nAI video generation products, while exciting, have \nnot yet crossed from machine learning into AI engi- \nneering .\nConsumer models have not yet had their Studio \nGhibli moment where they can accurately represent \ncharacters in input and replay them in alternate \nsettings .\nAs a result, products tend require a lot of special- \nized knowledge to build, and consume GPU cycles \non runtime generating avatars from user input that \ncan then be replayed in new settings and scenarios .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "130 S A M  B H A G WAT \nSandboxing: Always run generated code \nin a sandboxed environment. This \nprevents the agent from accidentally (or \nmaliciously) running dangerous \ncommands on your machine (like `rm - rf \n/`). \nCode Analysis: Y ou can give agents access \nto linters, static type checkers, and other \nanalysis tools. This provides ground truth \nfeedback and helps agents write higher- \nquality code .\nIf you’re building a code agent, you should take a \ndeep look at the tools and platforms that specialize \nspeciﬁcally in this use case .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "we’ll see more incidents like these .\nThe eternal September of AI will \ncontinue. Every month brings new \ndevelopers who haven't learned how to \nwrite good prompts or what a vector \ndatabase is. Meanwhile, the rapid pace of \nmodel updates means even established \nteams are constantly adapting their",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  },
+  {
+    "text": "Principles of Building AI Agents 133 \nimplementations. In a ﬁeld where the \nground shift constantly , we're all \nperpetual beginners. T o build something \nenduring, you have to stay humble .",
+    "source": "C:\\Users\\voonn\\Agentic_AI_Documents\\principles-of-building-ai-agents.pdf"
+  }
+]

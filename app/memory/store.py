@@ -630,7 +630,7 @@ def search_similar_memories(
 
     conn.close()
 
-    SIMILARITY_THRESHOLD = 0.30
+    SIMILARITY_THRESHOLD = 0.3
 
     results = []
 

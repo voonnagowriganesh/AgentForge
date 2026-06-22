@@ -81,3 +81,8 @@ memory.db
 
 
 chroma_db/
+
+app/chorma_db/
+
+app/data/
+

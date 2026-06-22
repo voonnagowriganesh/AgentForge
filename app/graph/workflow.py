@@ -9,6 +9,10 @@ from app.agents.planner_agent import planner_agent
 
 from app.agents.executor_agent import executor_agent
 
+from app.agents.plan_validator import plan_validator
+
+from app.agents.plan_enhancer import plan_enhancer
+
 from app.agents.tool_agent import tool_agent
 from app.tools.llm_tool import llm
 from app.agents.memory_agent import memory_agent
@@ -28,12 +32,40 @@ from app.core.logger import logger
 
 async def planner_node(state):
 
-    plan = await planner_agent.execute(state["query"], state["memory_context"])
-    trace = state.get("execution_trace", [])
-    trace.append({"agent": "planner", "steps": plan["plan"]})
+    # plan = await planner_agent.execute(state["query"], state["memory_context"])
 
-    logger.info("planner_node_completed", query=state["query"], plan=plan)
-    return {"plan": plan["plan"], "current_step": 0, "execution_trace": trace}
+    generated_plan = await planner_agent.execute(
+        state["query"], state["memory_context"]
+    )
+
+    validate_plan = plan_validator.validate(
+        query=state["query"],
+        plan=generated_plan["plan"],
+        memory_context=state["memory_context"],
+    )
+
+    # enhanced_plan = plan_enhancer.enhance(
+    #     query=state["query"],
+    #     plan=validate_plan,
+    # )
+
+    trace = state.get("execution_trace", [])
+    trace.append(
+        {
+            "agent": "planner",
+            "gnerated_plan": generated_plan["plan"],
+            "validated_plan": validate_plan,
+            # "enhanced_plan": enhanced_plan,
+        }
+    )
+
+    logger.info(
+        "planner_node_completed",
+        query=state["query"],
+        validate_plan=validate_plan,
+        # enhanced_plan=enhanced_plan,
+    )
+    return {"plan": validate_plan, "current_step": 0, "execution_trace": trace}
 
 
 # async def router_node(state):

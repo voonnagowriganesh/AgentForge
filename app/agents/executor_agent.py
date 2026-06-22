@@ -1,5 +1,9 @@
 from app.tools.registry import TOOLS
 
+from app.tools.web_search import search_web
+
+from app.utils.document_validator import is_valid_document_result
+
 import inspect
 
 from app.core.logger import logger
@@ -80,16 +84,38 @@ class ExecutorAgent:
             )
 
             result = await tool(
-                #tool_input,
-                query = user_query,
+                # tool_input,
+                query=user_query,
                 memory_context=memory_profile,
                 previous_results=previous_results,
             )
 
+        # elif tool_name == "document_search":
+
+        #     result = document_search(tool_input)
+
         elif tool_name == "document_search":
 
             result = document_search(tool_input)
+            top_document = result.split("Document 2")[0]
 
+            is_valid = is_valid_document_result(top_document)
+
+            # is_valid = is_valid_document_result(result)
+
+            logger.info(
+                "document_result_validation",
+                valid=is_valid,
+            )
+
+            if not is_valid:
+
+                logger.info(
+                    "document_fallback_to_web",
+                    query=tool_input,
+                )
+
+                result = await search_web(tool_input)
         elif inspect.iscoroutinefunction(tool):
 
             result = await tool(tool_input)
