@@ -21,6 +21,9 @@ from app.memory.memory_router import check_structured_memory
 
 from app.utils.result_parser import extract_result
 
+from app.agents.reflection_agent import (
+    reflection_agent,
+)
 
 from app.core.logger import logger
 
@@ -65,7 +68,12 @@ async def planner_node(state):
         validate_plan=validate_plan,
         # enhanced_plan=enhanced_plan,
     )
-    return {"plan": validate_plan, "current_step": 0, "execution_trace": trace}
+    return {
+        "plan": validate_plan,
+        "current_step": 0,
+        "execution_trace": trace,
+        "replan_count": state.get("replan_count", 0) + 1,
+    }
 
 
 # async def router_node(state):
@@ -167,6 +175,58 @@ async def executor_node(state):
     )
 
     return {"step_results": results, "current_step": idx + 1, "execution_trace": trace}
+
+
+async def reflection_node(state):
+
+    reflection = await reflection_agent.execute(
+        query=state["query"],
+        step_results=state["step_results"],
+    )
+
+    trace = state.get("execution_trace", [])
+
+    trace.append(
+        {
+            "agent": "reflection",
+            "output": reflection,
+        }
+    )
+
+    logger.info(
+        "reflection_node_completed",
+        reflection=reflection,
+    )
+
+    return {
+        "reflection": reflection,
+        "execution_trace": trace,
+    }
+
+
+def reflection_decision(state):
+
+    reflection = state.get("reflection", {})
+
+    sufficient = reflection.get(
+        "sufficient",
+        True,
+    )
+
+    replan_count = state.get(
+        "replan_count",
+        0,
+    )
+
+    if sufficient:
+
+        return "response"
+
+    if replan_count >= 1:
+
+        return "response"
+
+    return "planner"
 
 
 async def memory_node(state):
@@ -301,6 +361,11 @@ builder.add_node("planner", planner_node)
 
 builder.add_node("executor", executor_node)
 
+builder.add_node(
+    "reflection",
+    reflection_node,
+)
+
 builder.add_node("memory", memory_node)
 
 builder.add_node(
@@ -349,8 +414,26 @@ builder.add_edge("tool", "response")
 
 builder.add_edge("planner", "executor")
 
+# builder.add_conditional_edges(
+#     "executor", continue_execution, {"executor": "executor", "end": "response"}
+# )
+
 builder.add_conditional_edges(
-    "executor", continue_execution, {"executor": "executor", "end": "response"}
+    "executor",
+    continue_execution,
+    {
+        "executor": "executor",
+        "end": "reflection",
+    },
+)
+
+builder.add_conditional_edges(
+    "reflection",
+    reflection_decision,
+    {
+        "planner": "planner",
+        "response": "response",
+    },
 )
 
 builder.add_edge("response", END)
